@@ -15,15 +15,15 @@ if (!globalThis.ReadableStream) {
 }
 
 // Polyfill Blob for undici (required in some Node runtimes)
-if (!globalThis.Blob) {
+// MUST be set before undici is required
+if (typeof globalThis.Blob === 'undefined') {
     try {
         const { Blob } = require('node:buffer');
-        if (Blob) {
-            globalThis.Blob = Blob;
-        }
-    } catch (err) {
-        const Blob = require('blob-polyfill').Blob;
         globalThis.Blob = Blob;
+    } catch (err) {
+        // Fallback to polyfill
+        const BlobPolyfill = require('blob-polyfill');
+        globalThis.Blob = BlobPolyfill.Blob;
     }
 }
 
