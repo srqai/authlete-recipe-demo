@@ -6,7 +6,7 @@ const cors = require('cors');
 const { Authlete } = require('authlete-typescript-sdk');
 
 const app = express();
-const PORT = 3004;
+const PORT = process.env.PORT || 3004;
 const AUTHLETE_BASE_URL = process.env.AUTHLETE_BASE_URL || 'https://us.authlete.com';
 
 app.use(cors());
