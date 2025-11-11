@@ -1,0 +1,58 @@
+{
+  "name": "@shariqnazr222/authlete-oauth-demo",
+  "version": "1.0.0",
+  "description": "Complete OAuth 2.0 and PAR (Pushed Authorization Request) implementation demos using Authlete SDK",
+  "main": "src/authlete-onboarding-guide.js",
+  "scripts": {
+    "start": "node src/authlete-onboarding-guide.js",
+    "start:par": "node src/par-tutorial.js",
+    "start:both": "concurrently \"npm run start\" \"npm run start:par\"",
+    "dev": "nodemon src/authlete-onboarding-guide.js",
+    "dev:par": "nodemon src/par-tutorial.js"
+  },
+  "keywords": [
+    "oauth",
+    "oauth2",
+    "authlete",
+    "authorization",
+    "par",
+    "pushed-authorization-request",
+    "openid-connect",
+    "authentication",
+    "demo",
+    "tutorial",
+    "sdk"
+  ],
+  "author": "Authlete Demo",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/authlete/authlete-oauth-demo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/authlete/authlete-oauth-demo/issues"
+  },
+  "homepage": "https://github.com/authlete/authlete-oauth-demo#readme",
+  "dependencies": {
+    "authlete-typescript-sdk": "^1.0.0",
+    "express": "^4.18.0",
+    "dotenv": "^16.0.0",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.0",
+    "concurrently": "^7.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "files": [
+    "src/",
+    "public/",
+    "README.md",
+    "LICENSE",
+    ".env.example",
+    "setup.md",
+    "SETUP_INSTRUCTIONS.md"
+  ]
+}
