@@ -1,10 +1,17 @@
 // Load environment variables from .env file
 require('dotenv').config();
 
-// Polyfill ReadableStream for undici (required in Node < 18)
+// Polyfill ReadableStream for undici (required in some Node runtimes)
 if (!globalThis.ReadableStream) {
-    const { ReadableStream } = require('web-streams-polyfill/ponyfill/es6');
-    globalThis.ReadableStream = ReadableStream;
+    try {
+        const { ReadableStream } = require('node:stream/web');
+        if (ReadableStream) {
+            globalThis.ReadableStream = ReadableStream;
+        }
+    } catch (err) {
+        const { ReadableStream } = require('web-streams-polyfill');
+        globalThis.ReadableStream = ReadableStream;
+    }
 }
 
 const { fetch, Request, Response, Headers } = require('undici');
