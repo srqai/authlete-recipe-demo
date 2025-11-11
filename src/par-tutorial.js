@@ -1,6 +1,12 @@
 // PAR Tutorial - Step by Step Implementation
 require('dotenv').config();
 
+const { fetch, Request, Response, Headers } = require('undici');
+if (!globalThis.fetch) globalThis.fetch = fetch;
+if (!globalThis.Request) globalThis.Request = Request;
+if (!globalThis.Response) globalThis.Response = Response;
+if (!globalThis.Headers) globalThis.Headers = Headers;
+
 const express = require('express');
 const cors = require('cors');
 const https = require('https');
