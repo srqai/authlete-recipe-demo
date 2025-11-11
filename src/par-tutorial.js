@@ -75,7 +75,7 @@ const tutorialSteps = [
                         <strong>response_type:</strong> code
                     </div>
                     <div class="param-item">
-                        <strong>client_id:</strong> 3737820648
+                        <strong>client_id:</strong> YOUR_CLIENT_ID
                     </div>
                     <div class="param-item">
                         <strong>redirect_uri:</strong> http://localhost:3002/callback
@@ -104,13 +104,13 @@ const tutorialSteps = [
                 </div>
             </div>
         `,
-        curl: `curl -X POST https://us.authlete.com/api/715948317/pushed_auth_req \\
-  -H "Authorization: Bearer bt1n2YM7L3mjGdYy_5fMdfiMPXSkSJKY-_z_qbCoyfg" \\
+        curl: `curl -X POST https://us.authlete.com/api/YOUR_SERVICE_ID/pushed_auth_req \\
+  -H "Authorization: Bearer YOUR_SERVICE_ACCESS_TOKEN" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "parameters": "response_type=code&client_id=3737820648&redirect_uri=http%3A%2F%2Flocalhost%3A3002%2Fcallback&state=abc123&scope=openid&nonce=xyz789",
-    "clientId": "3737820648",
-    "clientSecret": "dETX4AAyQh7s0CSq-mX7EK5Vayq8TOp5RiumH7N_YBuj8pfAYZtmVLwFvvDUZRg8sUzgmajqmut282STbDZXMw"
+    "parameters": "response_type=code&client_id=YOUR_CLIENT_ID&redirect_uri=http%3A%2F%2Flocalhost%3A3002%2Fcallback&state=abc123&scope=openid&nonce=xyz789",
+    "clientId": "YOUR_CLIENT_ID",
+    "clientSecret": "YOUR_CLIENT_SECRET"
   }'`,
         sdk: `// Step 1: Push Authorization Request
 import { Authlete } from 'authlete-typescript-sdk';
@@ -118,16 +118,16 @@ import { Authlete } from 'authlete-typescript-sdk';
 const authlete = new Authlete({
     serverIdx: 0, // US Cluster
     security: {
-        authlete: "bt1n2YM7L3mjGdYy_5fMdfiMPXSkSJKY-_z_qbCoyfg"
+        authlete: "YOUR_SERVICE_ACCESS_TOKEN"
     }
 });
 
 const result = await authlete.authorizationEndpoint.authAuthorizationPushApi({
-    serviceId: "715948317",
+    serviceId: "YOUR_SERVICE_ID",
     requestBody: {
-        parameters: "response_type=code&client_id=3737820648&redirect_uri=http%3A%2F%2Flocalhost%3A3002%2Fcallback&state=abc123&scope=openid&nonce=xyz789",
-        clientId: "3737820648",
-        clientSecret: "dETX4AAyQh7s0CSq-mX7EK5Vayq8TOp5RiumH7N_YBuj8pfAYZtmVLwFvvDUZRg8sUzgmajqmut282STbDZXMw"
+        parameters: "response_type=code&client_id=YOUR_CLIENT_ID&redirect_uri=http%3A%2F%2Flocalhost%3A3002%2Fcallback&state=abc123&scope=openid&nonce=xyz789",
+        clientId: "YOUR_CLIENT_ID",
+        clientSecret: "YOUR_CLIENT_SECRET"
     }
 });
 
@@ -154,7 +154,7 @@ console.log('Expires in:', result.expiresIn);`
                 
                 <h2>Authorization URL:</h2>
                 <div class="code-block">
-                    <code id="auth-url">https://us.authlete.com/api/715948317/authorization?request_uri=REQUEST_URI_FROM_STEP1</code>
+                    <code id="auth-url">https://us.authlete.com/api/YOUR_SERVICE_ID/authorization?request_uri=REQUEST_URI_FROM_STEP1</code>
                 </div>
                 
                 <div class="action-section">
@@ -165,11 +165,11 @@ console.log('Expires in:', result.expiresIn);`
             </div>
         `,
         curl: `# Authorization URL (user clicks this)
-curl -X POST "https://us.authlete.com/api/715948317/auth/authorization" \\
-  -H "Authorization: Bearer bt1n2YM7L3mjGdYy_5fMdfiMPXSkSJKY-_z_qbCoyfg" \\
+curl -X POST "https://us.authlete.com/api/YOUR_SERVICE_ID/auth/authorization" \\
+  -H "Authorization: Bearer YOUR_SERVICE_ACCESS_TOKEN" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "parameters": "request_uri=REQUEST_URI_FROM_STEP1&client_id=3737820648&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3002%2Fcallback&state=abc123&scope=openid&nonce=xyz789"
+    "parameters": "request_uri=REQUEST_URI_FROM_STEP1&client_id=YOUR_CLIENT_ID&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3002%2Fcallback&state=abc123&scope=openid&nonce=xyz789"
   }'
 
 # What happens:
@@ -179,7 +179,7 @@ curl -X POST "https://us.authlete.com/api/715948317/auth/authorization" \\
 # 4. Ticket used in next step`,
         sdk: `// Step 2: User Authorization with Request URI
 // User is redirected to this URL:
-const authUrl = \`https://us.authlete.com/api/715948317/authorization?request_uri=\${requestUri}\`;
+const authUrl = \`https://us.authlete.com/api/YOUR_SERVICE_ID/authorization?request_uri=\${requestUri}\`;
 
 // In browser, user sees authorization consent page
 // User approves/denies the request
@@ -187,7 +187,7 @@ const authUrl = \`https://us.authlete.com/api/715948317/authorization?request_ur
 
 // For demo purposes, we simulate the authorization:
 const authResult = await authlete.authorizationEndpoint.authAuthorizationApi({
-    serviceId: "715948317",
+    serviceId: "YOUR_SERVICE_ID",
     requestBody: {
         parameters: \`request_uri=\${requestUri}\`
     }
@@ -230,8 +230,8 @@ console.log('State:', authResult.state);`
                 </div>
             </div>
         `,
-        curl: `curl -X POST "https://us.authlete.com/api/715948317/auth/authorization/issue" \\
-  -H "Authorization: Bearer bt1n2YM7L3mjGdYy_5fMdfiMPXSkSJKY-_z_qbCoyfg" \\
+        curl: `curl -X POST "https://us.authlete.com/api/YOUR_SERVICE_ID/auth/authorization/issue" \\
+  -H "Authorization: Bearer YOUR_SERVICE_ACCESS_TOKEN" \\
   -H "Content-Type: application/json" \\
   -d '{
     "ticket": "TICKET_FROM_STEP2",
@@ -239,7 +239,7 @@ console.log('State:', authResult.state);`
   }'`,
         sdk: `// Step 3: Complete Authorization with Ticket
 const issueResult = await authlete.authorizationEndpoint.authAuthorizationIssueApi({
-    serviceId: "715948317",
+    serviceId: "YOUR_SERVICE_ID",
     requestBody: {
         ticket: ticketFromStep2,
         subject: "user123"
@@ -290,21 +290,21 @@ console.log('Response Content:', issueResult.responseContent);`
                 </div>
             </div>
         `,
-        curl: `curl -X POST https://us.authlete.com/api/715948317/auth/token \\
-  -H "Authorization: Bearer bt1n2YM7L3mjGdYy_5fMdfiMPXSkSJKY-_z_qbCoyfg" \\
+        curl: `curl -X POST https://us.authlete.com/api/YOUR_SERVICE_ID/auth/token \\
+  -H "Authorization: Bearer YOUR_SERVICE_ACCESS_TOKEN" \\
   -H "Content-Type: application/json" \\
   -d '{
     "parameters": "grant_type=authorization_code&code=AUTHORIZATION_CODE&redirect_uri=http%3A%2F%2Flocalhost%3A3002%2Fcallback",
-    "clientId": "3737820648",
-    "clientSecret": "dETX4AAyQh7s0CSq-mX7EK5Vayq8TOp5RiumH7N_YBuj8pfAYZtmVLwFvvDUZRg8sUzgmajqmut282STbDZXMw"
+    "clientId": "YOUR_CLIENT_ID",
+    "clientSecret": "YOUR_CLIENT_SECRET"
   }'`,
         sdk: `// Step 4: Token Exchange
 const tokenResult = await authlete.tokenEndpoint.authTokenApi({
-    serviceId: "715948317",
+    serviceId: "YOUR_SERVICE_ID",
     requestBody: {
         parameters: "grant_type=authorization_code&code=" + authorizationCode + "&redirect_uri=http%3A%2F%2Flocalhost%3A3002%2Fcallback&code_verifier=" + codeVerifier,
-        clientId: "3737820648",
-        clientSecret: "dETX4AAyQh7s0CSq-mX7EK5Vayq8TOp5RiumH7N_YBuj8pfAYZtmVLwFvvDUZRg8sUzgmajqmut282STbDZXMw"
+        clientId: "YOUR_CLIENT_ID",
+        clientSecret: "YOUR_CLIENT_SECRET"
     }
 });
 
@@ -333,16 +333,16 @@ app.post('/api/execute-step/:stepId', async (req, res) => {
         switch (stepId) {
             case 1:
                 // Execute Step 1: Push Authorization Request
-                const response1 = await makeRequest('https://us.authlete.com/api/715948317/pushed_auth_req', {
+                const response1 = await makeRequest('https://us.authlete.com/api/YOUR_SERVICE_ID/pushed_auth_req', {
                     method: 'POST',
                     headers: {
-                        'Authorization': 'Bearer bt1n2YM7L3mjGdYy_5fMdfiMPXSkSJKY-_z_qbCoyfg',
+                        'Authorization': 'Bearer YOUR_SERVICE_ACCESS_TOKEN',
                         'Content-Type': 'application/json'
                     },
                     body: {
-                        parameters: "response_type=code&client_id=3737820648&redirect_uri=http%3A%2F%2Flocalhost%3A3002%2Fcallback&state=abc123&scope=openid&nonce=xyz789",
-                        clientId: "3737820648",
-                        clientSecret: "dETX4AAyQh7s0CSq-mX7EK5Vayq8TOp5RiumH7N_YBuj8pfAYZtmVLwFvvDUZRg8sUzgmajqmut282STbDZXMw"
+                        parameters: "response_type=code&client_id=YOUR_CLIENT_ID&redirect_uri=http%3A%2F%2Flocalhost%3A3002%2Fcallback&state=abc123&scope=openid&nonce=xyz789",
+                        clientId: "YOUR_CLIENT_ID",
+                        clientSecret: "YOUR_CLIENT_SECRET"
                     }
                 });
                 
@@ -366,14 +366,14 @@ app.post('/api/execute-step/:stepId', async (req, res) => {
                 
                 try {
                     // In PAR flow, step 2 is a regular authorization request with request_uri parameter
-                    const response2 = await makeRequest('https://us.authlete.com/api/715948317/auth/authorization', {
+                    const response2 = await makeRequest('https://us.authlete.com/api/YOUR_SERVICE_ID/auth/authorization', {
                         method: 'POST',
                         headers: {
-                            'Authorization': 'Bearer bt1n2YM7L3mjGdYy_5fMdfiMPXSkSJKY-_z_qbCoyfg',
+                            'Authorization': 'Bearer YOUR_SERVICE_ACCESS_TOKEN',
                             'Content-Type': 'application/json'
                         },
                         body: {
-                            parameters: `request_uri=${encodeURIComponent(tutorialState.requestUri)}&client_id=3737820648&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3002%2Fcallback&state=abc123&scope=openid&nonce=xyz789`
+                            parameters: `request_uri=${encodeURIComponent(tutorialState.requestUri)}&client_id=YOUR_CLIENT_ID&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3002%2Fcallback&state=abc123&scope=openid&nonce=xyz789`
                         }
                     });
                     
@@ -417,10 +417,10 @@ app.post('/api/execute-step/:stepId', async (req, res) => {
                 console.log('Completing authorization with ticket:', tutorialState.ticket);
                 
                 try {
-                    const response3 = await makeRequest('https://us.authlete.com/api/715948317/auth/authorization/issue', {
+                    const response3 = await makeRequest('https://us.authlete.com/api/YOUR_SERVICE_ID/auth/authorization/issue', {
                         method: 'POST',
                         headers: {
-                            'Authorization': 'Bearer bt1n2YM7L3mjGdYy_5fMdfiMPXSkSJKY-_z_qbCoyfg',
+                            'Authorization': 'Bearer YOUR_SERVICE_ACCESS_TOKEN',
                             'Content-Type': 'application/json'
                         },
                         body: {
@@ -468,16 +468,16 @@ app.post('/api/execute-step/:stepId', async (req, res) => {
                 console.log('Token exchange with code:', tutorialState.authorizationCode);
                 
                 try {
-                    const response4 = await makeRequest('https://us.authlete.com/api/715948317/auth/token', {
+                    const response4 = await makeRequest('https://us.authlete.com/api/YOUR_SERVICE_ID/auth/token', {
                         method: 'POST',
                         headers: {
-                            'Authorization': 'Bearer bt1n2YM7L3mjGdYy_5fMdfiMPXSkSJKY-_z_qbCoyfg',
+                            'Authorization': 'Bearer YOUR_SERVICE_ACCESS_TOKEN',
                             'Content-Type': 'application/json'
                         },
                         body: {
                             parameters: `grant_type=authorization_code&code=${tutorialState.authorizationCode}&redirect_uri=http%3A%2F%2Flocalhost%3A3002%2Fcallback`,
-                            clientId: "3737820648",
-                            clientSecret: "dETX4AAyQh7s0CSq-mX7EK5Vayq8TOp5RiumH7N_YBuj8pfAYZtmVLwFvvDUZRg8sUzgmajqmut282STbDZXMw"
+                            clientId: "YOUR_CLIENT_ID",
+                            clientSecret: "YOUR_CLIENT_SECRET"
                         }
                     });
                     
@@ -1148,8 +1148,8 @@ const htmlTemplate = `
                 <pre style="background: #f8f9fa; border: 1px solid #e1e5e9; border-radius: 6px; padding: 16px; margin: 16px 0; overflow-x: auto; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 12px; line-height: 1.4;">
 Client → Authlete: POST /api/{serviceId}/pushed_auth_req
 {
-  "parameters": "response_type=code&client_id=3737820648&redirect_uri=...",
-  "clientId": "3737820648",
+  "parameters": "response_type=code&client_id=YOUR_CLIENT_ID&redirect_uri=...",
+  "clientId": "YOUR_CLIENT_ID",
   "clientSecret": "..."
 }
 
@@ -1184,7 +1184,7 @@ Authlete → Client: {
 Client → Authlete: POST /api/{serviceId}/auth/token
 {
   "parameters": "grant_type=authorization_code&code=abc123...",
-  "clientId": "3737820648",
+  "clientId": "YOUR_CLIENT_ID",
   "clientSecret": "..."
 }
 
@@ -1243,7 +1243,7 @@ urn:ietf:params:oauth:request_uri:{unique_identifier}</pre>
                 <h3>Parameters Pushed in Step 1</h3>
                 <ul>
                     <li><code>response_type=code</code></li>
-                    <li><code>client_id=3737820648</code></li>
+                    <li><code>client_id=YOUR_CLIENT_ID</code></li>
                     <li><code>redirect_uri=http://localhost:3002/callback</code></li>
                     <li><code>scope=openid</code></li>
                     <li><code>state=abc123</code></li>
@@ -1281,15 +1281,15 @@ urn:ietf:params:oauth:request_uri:{unique_identifier}</pre>
                 
                 <pre style="background: #f8f9fa; border: 1px solid #e1e5e9; border-radius: 6px; padding: 16px; margin: 16px 0; overflow-x: auto; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 12px; line-height: 1.4;">
 # Service Configuration
-AUTHLETE_SERVICE_ID=715948317
-AUTHLETE_SERVICE_SECRET=5t5CO9JsNiBNXVdnjMzMf6jlx6gxSPTL9E9zhXiFyto
+AUTHLETE_SERVICE_ID=YOUR_SERVICE_ID
+AUTHLETE_SERVICE_SECRET=YOUR_SERVICE_SECRET
 
 # Client Configuration  
-AUTHLETE_CLIENT_ID=3737820648
-AUTHLETE_CLIENT_SECRET=dETX4AAyQh7s0CSq-mX7EK5Vayq8TOp5RiumH7N_YBuj8pfAYZtmVLwFvvDUZRg8sUzgmajqmut282STbDZXMw
+AUTHLETE_CLIENT_ID=YOUR_CLIENT_ID
+AUTHLETE_CLIENT_SECRET=YOUR_CLIENT_SECRET
 
 # Service Access Token
-AUTHLETE_AUTHLETE=bt1n2YM7L3mjGdYy_5fMdfiMPXSkSJKY-_z_qbCoyfg</pre>
+AUTHLETE_AUTHLETE=YOUR_SERVICE_ACCESS_TOKEN</pre>
                 
                 <h2>📊 Success Metrics</h2>
                 
@@ -1329,10 +1329,10 @@ const authlete = new Authlete({
 
 // Step 1: Push Authorization Request
 const result = await authlete.authorizationEndpoint.authAuthorizationPushApi({
-    serviceId: "715948317",
+    serviceId: "YOUR_SERVICE_ID",
     requestBody: {
-        parameters: "response_type=code&client_id=3737820648&...",
-        clientId: "3737820648",
+        parameters: "response_type=code&client_id=YOUR_CLIENT_ID&...",
+        clientId: "YOUR_CLIENT_ID",
         clientSecret: "your_client_secret"
     }
 });</pre>

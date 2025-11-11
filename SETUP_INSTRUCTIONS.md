@@ -14,7 +14,7 @@
 ### Step 1: Get Service Access Token from Management Console
 
 1. **Log into Authlete Management Console**: https://console.authlete.com
-2. **Navigate to your service**: Look for service ID `715948317`
+2. **Navigate to your service**: Look for service ID `YOUR_SERVICE_ID`
 3. **Find Service Access Token section**: Look for "Service Access Token", "API Token", or "Bearer Token"
 4. **Generate/Copy the token**: It will be a long JWT-style token starting with `ey...`
 
@@ -24,7 +24,7 @@ Replace the placeholder in `authlete-onboarding-guide.js`:
 
 ```javascript
 // Find this line around line 34:
-const SERVICE_ACCESS_TOKEN = "YOUR_SERVICE_ACCESS_TOKEN_FROM_CONSOLE";
+const SERVICE_ACCESS_TOKEN = "YOUR_SERVICE_ACCESS_TOKEN";
 
 // Replace with your actual token:
 const SERVICE_ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6..."; // Your actual token
@@ -34,8 +34,8 @@ const SERVICE_ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6..."; 
 
 ```bash
 # Restart your server
-cd /Users/muhammadshariqnazr/authlete-sdk-demo
-node authlete-onboarding-guide.js
+cd /path/to/authlete-recipe-demo
+node src/authlete-onboarding-guide.js
 ```
 
 ## 🧪 Test with cURL (After Getting Token)
@@ -47,25 +47,25 @@ Once you have the Service Access Token, test the flow:
 export SAT="your_service_access_token_here"
 
 # Test 1: Authorization Request
-curl -X POST "https://us.authlete.com/api/715948317/auth/authorization" \
+curl -X POST "https://us.authlete.com/api/YOUR_SERVICE_ID/auth/authorization" \
   -H "Authorization: Bearer $SAT" \
   -H "Content-Type: application/json" \
-  -d '{"parameters": "response_type=code&client_id=3737820648&redirect_uri=http://localhost:3000/callback&scope=read&state=demo123"}'
+  -d '{"parameters": "response_type=code&client_id=YOUR_CLIENT_ID&redirect_uri=http://localhost:3000/callback&scope=read&state=demo123"}'
 
 # Test 2: Issue Authorization Code (if step 1 returns a ticket)
-curl -X POST "https://us.authlete.com/api/715948317/auth/authorization/issue" \
+curl -X POST "https://us.authlete.com/api/YOUR_SERVICE_ID/auth/authorization/issue" \
   -H "Authorization: Bearer $SAT" \
   -H "Content-Type: application/json" \
   -d '{"ticket": "TICKET_FROM_STEP_1", "subject": "user-123"}'
 
 # Test 3: Exchange for Access Token
-curl -X POST "https://us.authlete.com/api/715948317/auth/token" \
+curl -X POST "https://us.authlete.com/api/YOUR_SERVICE_ID/auth/token" \
   -H "Authorization: Bearer $SAT" \
   -H "Content-Type: application/json" \
-  -d '{"clientId": "3737820648", "clientSecret": "dETX4AAyQh7s0CSq-mX7EK5Vayq8TOp5RiumH7N_YBuj8pfAYZtmVLwFvvDUZRg8sUzgmajqmut282STbDZXMw", "parameters": "grant_type=authorization_code&code=CODE_FROM_STEP_2&redirect_uri=http://localhost:3000/callback"}'
+  -d '{"clientId": "YOUR_CLIENT_ID", "clientSecret": "YOUR_CLIENT_SECRET", "parameters": "grant_type=authorization_code&code=CODE_FROM_STEP_2&redirect_uri=http://localhost:3000/callback"}'
 
 # Test 4: Introspect Token
-curl -X POST "https://us.authlete.com/api/715948317/auth/introspection" \
+curl -X POST "https://us.authlete.com/api/YOUR_SERVICE_ID/auth/introspection" \
   -H "Authorization: Bearer $SAT" \
   -H "Content-Type: application/json" \
   -d '{"token": "ACCESS_TOKEN_FROM_STEP_3"}'
@@ -74,10 +74,10 @@ curl -X POST "https://us.authlete.com/api/715948317/auth/introspection" \
 ## 📋 Current Configuration
 
 **Service Details:**
-- Service ID: `715948317`
-- Service Secret: `5t5CO9JsNiBNXVdnjMzMf6jlx6gxSPTL9E9zhXiFyto`
-- Client ID: `3737820648`
-- Client Secret: `dETX4AAyQh7s0CSq-mX7EK5Vayq8TOp5RiumH7N_YBuj8pfAYZtmVLwFvvDUZRg8sUzgmajqmut282STbDZXMw`
+- Service ID: `YOUR_SERVICE_ID`
+- Service Secret: `YOUR_SERVICE_SECRET`
+- Client ID: `YOUR_CLIENT_ID`
+- Client Secret: `YOUR_CLIENT_SECRET`
 
 **API Endpoints:**
 - Base URL: `https://us.authlete.com`
