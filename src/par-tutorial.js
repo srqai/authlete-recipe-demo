@@ -15,13 +15,15 @@ if (!globalThis.ReadableStream) {
 }
 
 // Polyfill Blob for undici (required in some Node runtimes)
-// MUST be set before undici is required
-if (typeof globalThis.Blob === 'undefined') {
-    try {
+// MUST be set before undici is required - undici checks for Blob at module load time
+try {
+    if (!globalThis.Blob) {
         const { Blob } = require('node:buffer');
         globalThis.Blob = Blob;
-    } catch (err) {
-        // Fallback to polyfill
+    }
+} catch (err) {
+    // Node < 18 doesn't have Blob in node:buffer, use polyfill
+    if (!globalThis.Blob) {
         const BlobPolyfill = require('blob-polyfill');
         globalThis.Blob = BlobPolyfill.Blob;
     }
