@@ -35,6 +35,7 @@
   "homepage": "https://github.com/authlete/authlete-oauth-demo#readme",
   "dependencies": {
     "authlete-typescript-sdk": "^1.0.0",
+    "blob-polyfill": "^9.0.20240710",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.18.0",

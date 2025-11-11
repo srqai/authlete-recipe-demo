@@ -14,6 +14,19 @@ if (!globalThis.ReadableStream) {
     }
 }
 
+// Polyfill Blob for undici (required in some Node runtimes)
+if (!globalThis.Blob) {
+    try {
+        const { Blob } = require('node:buffer');
+        if (Blob) {
+            globalThis.Blob = Blob;
+        }
+    } catch (err) {
+        const Blob = require('blob-polyfill').Blob;
+        globalThis.Blob = Blob;
+    }
+}
+
 const { fetch, Request, Response, Headers } = require('undici');
 if (!globalThis.fetch) globalThis.fetch = fetch;
 if (!globalThis.Request) globalThis.Request = Request;
