@@ -1,46 +1,12 @@
 // Load environment variables from .env file
 require('dotenv').config();
 
-// Polyfill ReadableStream for undici (required in some Node runtimes)
-if (!globalThis.ReadableStream) {
-    try {
-        const { ReadableStream } = require('node:stream/web');
-        if (ReadableStream) {
-            globalThis.ReadableStream = ReadableStream;
-        }
-    } catch (err) {
-        const { ReadableStream } = require('web-streams-polyfill');
-        globalThis.ReadableStream = ReadableStream;
-    }
-}
-
-// Polyfill Blob for undici (required in some Node runtimes)
-// MUST be set before undici is required - undici checks for Blob at module load time
-try {
-    if (!globalThis.Blob) {
-        const { Blob } = require('node:buffer');
-        globalThis.Blob = Blob;
-    }
-} catch (err) {
-    // Node < 18 doesn't have Blob in node:buffer, use polyfill
-    if (!globalThis.Blob) {
-        const BlobPolyfill = require('blob-polyfill');
-        globalThis.Blob = BlobPolyfill.Blob;
-    }
-}
-
-const { fetch, Request, Response, Headers } = require('undici');
-if (!globalThis.fetch) globalThis.fetch = fetch;
-if (!globalThis.Request) globalThis.Request = Request;
-if (!globalThis.Response) globalThis.Response = Response;
-if (!globalThis.Headers) globalThis.Headers = Headers;
-
 const express = require('express');
 const cors = require('cors');
 const { Authlete } = require('authlete-typescript-sdk');
 
 const app = express();
-const PORT = process.env.PORT || 3004;
+const PORT = 3004;
 const AUTHLETE_BASE_URL = process.env.AUTHLETE_BASE_URL || 'https://us.authlete.com';
 
 app.use(cors());
@@ -49,8 +15,8 @@ app.use(express.static('public'));
 
 // Admin credentials for creating services and clients
 const ADMIN_CREDENTIALS = {
-    serviceId: process.env.AUTHLETE_SERVICE_ID || "YOUR_SERVICE_ID",
-    serviceSecret: process.env.AUTHLETE_SERVICE_SECRET || "YOUR_SERVICE_SECRET"
+    serviceId: process.env.AUTHLETE_SERVICE_ID || "715948317",
+    serviceSecret: process.env.AUTHLETE_SERVICE_SECRET || "5t5CO9JsNiBNXVdnjMzMf6jlx6gxSPTL9E9zhXiFyto"
 };
 
 // Initialize Authlete SDK for admin operations
@@ -62,17 +28,17 @@ const adminAuthlete = new Authlete({
 
 // Store user's created credentials - these will be simulated with demo values
 let userCredentials = {
-    serviceId: process.env.AUTHLETE_SERVICE_ID || "YOUR_SERVICE_ID", // Use the same as admin for demo
-    serviceSecret: process.env.AUTHLETE_SERVICE_SECRET || "YOUR_SERVICE_SECRET", // Use the same as admin for demo
-    clientId: process.env.AUTHLETE_CLIENT_ID || "YOUR_CLIENT_ID", // Correct client ID
-    clientSecret: process.env.AUTHLETE_CLIENT_SECRET || "YOUR_CLIENT_SECRET" // Correct client secret
+    serviceId: process.env.AUTHLETE_SERVICE_ID || "715948317", // Use the same as admin for demo
+    serviceSecret: process.env.AUTHLETE_SERVICE_SECRET || "5t5CO9JsNiBNXVdnjMzMf6jlx6gxSPTL9E9zhXiFyto", // Use the same as admin for demo
+    clientId: process.env.AUTHLETE_CLIENT_ID || "3737820648", // Correct client ID
+    clientSecret: process.env.AUTHLETE_CLIENT_SECRET || "dETX4AAyQh7s0CSq-mX7EK5Vayq8TOp5RiumH7N_YBuj8pfAYZtmVLwFvvDUZRg8sUzgmajqmut282STbDZXMw" // Correct client secret
 };
 
 // Service Access Token from environment variable
-const SERVICE_ACCESS_TOKEN = process.env.AUTHLETE_AUTHLETE || "YOUR_SERVICE_ACCESS_TOKEN";
+const SERVICE_ACCESS_TOKEN = process.env.AUTHLETE_AUTHLETE || "xk1Cnyy9O-7b5q9a6-98g2oYO0trF9IS0ERi0iOGMqQ";
 
 function getServiceAccessToken() {
-    if (!SERVICE_ACCESS_TOKEN || SERVICE_ACCESS_TOKEN === "YOUR_SERVICE_ACCESS_TOKEN") {
+    if (!SERVICE_ACCESS_TOKEN || SERVICE_ACCESS_TOKEN === "YOUR_SERVICE_ACCESS_TOKEN_FROM_CONSOLE") {
         throw new Error('Please set AUTHLETE_AUTHLETE in your .env file to your actual token from Authlete Management Console');
     }
     return SERVICE_ACCESS_TOKEN;
@@ -713,11 +679,11 @@ console.log('🔑 Client Secret:', response.clientSecret);`
                             <div class="env-config">
                                 <div class="code-block">
                                     <code># Authlete Configuration
-AUTHLETE_SERVICE_ID=YOUR_SERVICE_ID
-AUTHLETE_SERVICE_SECRET=YOUR_SERVICE_SECRET
-AUTHLETE_CLIENT_ID=YOUR_CLIENT_ID
-AUTHLETE_CLIENT_SECRET=YOUR_CLIENT_SECRET
-AUTHLETE_AUTHLETE=YOUR_SERVICE_ACCESS_TOKEN
+AUTHLETE_SERVICE_ID=715948317
+AUTHLETE_SERVICE_SECRET=5t5CO9JsNiBNXVdnjMzMf6jlx6gxSPTL9E9zhXiFyto
+AUTHLETE_CLIENT_ID=3737820648
+AUTHLETE_CLIENT_SECRET=dETX4AAyQh7s0CSq-mX7EK5Vayq8TOp5RiumH7N_YBuj8pfAYZtmVLwFvvDUZRg8sUzgmajqmut282STbDZXMw
+AUTHLETE_AUTHLETE=xk1Cnyy9O-7b5q9a6-98g2oYO0trF9IS0ERi0iOGMqQ
 
 # Server Configuration
 PORT=3000
@@ -741,12 +707,12 @@ NODE_ENV=development</code>
                                         <div class="credential-items">
                                             <div class="credential-item">
                                                 <label>Service ID:</label>
-                                                <code id="setup-service-id">YOUR_SERVICE_ID</code>
+                                                <code id="setup-service-id">715948317</code>
                                                 <button class="copy-btn" onclick="copyToClipboard('setup-service-id')">Copy</button>
                                             </div>
                                             <div class="credential-item">
                                                 <label>Service Secret:</label>
-                                                <code id="setup-service-secret">YOUR_SERVICE_SECRET</code>
+                                                <code id="setup-service-secret">5t5CO9JsNiBNXVdnjMzMf6jlx6gxSPTL9E9zhXiFyto</code>
                                                 <button class="copy-btn" onclick="copyToClipboard('setup-service-secret')">Copy</button>
                                             </div>
                                         </div>
@@ -757,12 +723,12 @@ NODE_ENV=development</code>
                                         <div class="credential-items">
                                             <div class="credential-item">
                                                 <label>Client ID:</label>
-                                                <code id="setup-client-id">YOUR_CLIENT_ID</code>
+                                                <code id="setup-client-id">3737820648</code>
                                                 <button class="copy-btn" onclick="copyToClipboard('setup-client-id')">Copy</button>
                                             </div>
                                             <div class="credential-item">
                                                 <label>Client Secret:</label>
-                                                <code id="setup-client-secret">YOUR_CLIENT_SECRET</code>
+                                                <code id="setup-client-secret">dETX4AAyQh7s0CSq-mX7EK5Vayq8TOp5RiumH7N_YBuj8pfAYZtmVLwFvvDUZRg8sUzgmajqmut282STbDZXMw</code>
                                                 <button class="copy-btn" onclick="copyToClipboard('setup-client-secret')">Copy</button>
                                             </div>
                                         </div>
@@ -1295,9 +1261,9 @@ const authlete = new Authlete({
 // Step 1: Authorization Endpoint
 async function authorizationExample() {
   const result = await authlete.authorizationEndpoint.authAuthorizationApi({
-    serviceId: "YOUR_SERVICE_ID",
+    serviceId: "715948317",
     requestBody: {
-      parameters: "response_type=code&client_id=YOUR_CLIENT_ID&redirect_uri=http%3A%2F%2Flocalhost%3A3002%2Fcallback&scope=read&state=demo123",
+      parameters: "response_type=code&client_id=3737820648&redirect_uri=http%3A%2F%2Flocalhost%3A3002%2Fcallback&scope=read&state=demo123",
     },
   });
 
@@ -4498,8 +4464,8 @@ curl -X POST https://api.authlete.com/api/auth/authorization \\
   -H "Authorization: Bearer YOUR_SERVICE_ACCESS_TOKEN" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "serviceId": "YOUR_SERVICE_ID",
-    "parameters": "response_type=code&client_id=YOUR_CLIENT_ID&redirect_uri=http%3A%2F%2Flocalhost%3A3002%2Fcallback&scope=read&state=demo123"
+    "serviceId": "715948317",
+    "parameters": "response_type=code&client_id=3737820648&redirect_uri=http%3A%2F%2Flocalhost%3A3002%2Fcallback&scope=read&state=demo123"
   }'</code></pre>
                                             </div>
                                         </div>

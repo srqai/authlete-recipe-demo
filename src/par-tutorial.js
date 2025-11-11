@@ -1,40 +1,6 @@
 // PAR Tutorial - Step by Step Implementation
 require('dotenv').config();
 
-// Polyfill ReadableStream for undici (required in some Node runtimes)
-if (!globalThis.ReadableStream) {
-    try {
-        const { ReadableStream } = require('node:stream/web');
-        if (ReadableStream) {
-            globalThis.ReadableStream = ReadableStream;
-        }
-    } catch (err) {
-        const { ReadableStream } = require('web-streams-polyfill');
-        globalThis.ReadableStream = ReadableStream;
-    }
-}
-
-// Polyfill Blob for undici (required in some Node runtimes)
-// MUST be set before undici is required - undici checks for Blob at module load time
-try {
-    if (!globalThis.Blob) {
-        const { Blob } = require('node:buffer');
-        globalThis.Blob = Blob;
-    }
-} catch (err) {
-    // Node < 18 doesn't have Blob in node:buffer, use polyfill
-    if (!globalThis.Blob) {
-        const BlobPolyfill = require('blob-polyfill');
-        globalThis.Blob = BlobPolyfill.Blob;
-    }
-}
-
-const { fetch, Request, Response, Headers } = require('undici');
-if (!globalThis.fetch) globalThis.fetch = fetch;
-if (!globalThis.Request) globalThis.Request = Request;
-if (!globalThis.Response) globalThis.Response = Response;
-if (!globalThis.Headers) globalThis.Headers = Headers;
-
 const express = require('express');
 const cors = require('cors');
 const https = require('https');
